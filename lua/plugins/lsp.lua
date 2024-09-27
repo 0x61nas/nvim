@@ -166,7 +166,7 @@ return {
 			single_file_support = true,
 		})
 
-		lspconfig.tsserver.setup({
+		lspconfig.ts_ls.setup({
 			capabilities = capabilities,
 			autostart = true,
 			cmd = { "typescript-language-server", "--stdio" },
