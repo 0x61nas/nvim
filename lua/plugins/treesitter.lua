@@ -102,6 +102,13 @@ return {
 			"editorconfig",
 			"ssh_config",
 			"tmux",
+			"glsl",
+			"hlsl",
+			"ini",
+			"udev",
+			"llvm",
+			"ispc",
+			"inko",
 		},
 		incremental_selection = {
 			enable = true,
