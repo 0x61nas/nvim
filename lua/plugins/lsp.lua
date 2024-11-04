@@ -278,6 +278,22 @@ return {
 		-- C/C++
 		lspconfig.clangd.setup({
 			capabilities = capabilities,
+			cmd = {
+				"clangd",
+				"--background-index",
+				"--pch-storage=memory",
+				"--all-scopes-completion",
+				"--pretty",
+				"--header-insertion=never",
+				"-j=4",
+				"--inlay-hints",
+				"--header-insertion-decorators",
+				"--function-arg-placeholders",
+				"--completion-style=detailed",
+			},
+			filetypes = { "c", "cpp", "objc", "objcpp" },
+			root_dir = require("lspconfig").util.root_pattern("src"),
+			init_option = { fallbackFlags = { "-std=c++2a" } },
 			autostart = true,
 			single_file_support = true,
 		})
