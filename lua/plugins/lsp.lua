@@ -207,6 +207,35 @@ return {
 			single_file_support = true,
 		})
 
+		-- html: npm i -g vscode-langservers-extracted
+		lspconfig.html.setup({
+			capabilities = capabilities,
+			autostart = true,
+			init_options = {
+				configurationSection = { "html", "css", "javascript" },
+				embeddedLanguages = {
+					css = true,
+					javascript = true,
+				},
+				provideFormatter = true,
+			},
+			single_file_support = true,
+		})
+
+		-- htmx: cargo install htmx-lsp
+		lspconfig.htmx.setup({
+			capabilities = capabilities,
+			autostart = true,
+			single_file_support = true,
+		})
+
+		-- css-lsp: npm i -g vscode-langservers-extracted
+		lspconfig.cssls.setup({
+			capabilities = capabilities,
+			autostart = true,
+			single_file_support = true,
+		})
+
 		lspconfig.gleam.setup({
 			capabilities = capabilities,
 			autostart = true,
