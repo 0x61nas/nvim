@@ -322,29 +322,29 @@ return {
 		if configs.bash_lsp then lspconfig.bash_lsp.setup({}) end
 
 		-- Grammar
-		lspconfig.ltex.setup({
-			capabilities = capabilities,
-			autostart = true,
-			filetypes = {
-				"bib",
-				"gitcommit",
-				"markdown",
-				"org",
-				"plaintex",
-				"rst",
-				"rnoweb",
-				"tex",
-				"pandoc",
-				"quarto",
-				"rmd",
-				"context",
-				"html",
-				"xhtml",
-				"mail",
-				"text",
-			},
-			single_file_support = true,
-		})
+		-- lspconfig.ltex.setup({
+		-- 	capabilities = capabilities,
+		-- 	autostart = true,
+		-- 	filetypes = {
+		-- 		"bib",
+		-- 		"gitcommit",
+		-- 		"markdown",
+		-- 		"org",
+		-- 		"plaintex",
+		-- 		"rst",
+		-- 		"rnoweb",
+		-- 		"tex",
+		-- 		"pandoc",
+		-- 		"quarto",
+		-- 		"rmd",
+		-- 		"context",
+		-- 		"html",
+		-- 		"xhtml",
+		-- 		"mail",
+		-- 		"text",
+		-- 	},
+		-- 	single_file_support = true,
+		-- })
 
 		-- Dockerfile
 		lspconfig.dockerls.setup({
