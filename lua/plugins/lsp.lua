@@ -356,12 +356,28 @@ return {
 			},
 		})
 
-		-- Docker compose
-		lspconfig.docker_compose_language_service.setup({
+		-- Yaml
+		-- yarn global add yaml-language-server
+		lspconfig.yamlls.setup({
 			capabilities = capabilities,
-			autostart = true,
-			single_file_support = true,
-			filetypes = { "yaml", "yaml.docker-compose" },
+			settings = {
+				yaml = {
+					format = {
+						enable = true,
+						singleQuote = true,
+						bracketSpacing = true,
+					},
+					validate = true,
+					hover = true,
+					completion = true,
+				},
+				redhat = {
+					telemetry = {
+						enabled = false,
+					},
+				},
+				single_file_support = true,
+			},
 		})
 
 		-- enable inlay hints
