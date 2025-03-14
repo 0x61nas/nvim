@@ -380,6 +380,12 @@ return {
 			},
 		})
 
+		-- Haskell
+		lspconfig.hls.setup({
+			capabilities = capabilities,
+			filetypes = { "haskell", "lhaskell", "cabal" },
+		})
+
 		-- enable inlay hints
 		vim.lsp.inlay_hint.enable()
 	end,
