@@ -271,6 +271,10 @@ return {
 		-- }
 		lspconfig.jdtls.setup({
 			capabilities = capabilities,
+			cmd = {
+				"jdtls",
+				"--no-validate-java-version",
+			},
 			autostart = true,
 			single_file_support = true,
 		})

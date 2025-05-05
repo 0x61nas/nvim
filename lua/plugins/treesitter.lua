@@ -109,6 +109,10 @@ return {
 			"llvm",
 			"ispc",
 			"inko",
+			"disassembly",
+			"diff",
+			"haskell",
+			"corn",
 		},
 		incremental_selection = {
 			enable = true,
