@@ -113,6 +113,7 @@ return {
 			"diff",
 			"haskell",
 			"corn",
+			"odin",
 		},
 		incremental_selection = {
 			enable = true,
