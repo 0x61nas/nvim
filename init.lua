@@ -1112,36 +1112,35 @@ local plugins = {
         spec = {
           {
             mode = { "n", "v" },
-            { "<leader><tab>", group = "tabs" },
-            { "<leader>c", group = "code" },
-            { "<leader>f", group = "file/find" },
-            { "<leader>g", group = "git" },
-            { "<leader>gh", group = "hunks" },
-            { "<leader>q", group = "quit/session" },
-            { "<leader>s", group = "search" },
-            { "<leader>u", group = "ui", icon = { icon = "󰙵 ", color = "cyan" } },
-            {
-              "<leader>x",
-              group = "diagnostics/quickfix",
-              icon = { icon = "󱖫 ", color = "green" },
-            },
-            { "[", group = "prev" },
-            { "]", group = "next" },
-            { "g", group = "goto" },
-            { "gs", group = "surround" },
+            -- Group names based on keys defined in other plugins
+            { "<leader>b", group = "buffers" }, -- bb
+            { "<leader>c", group = "code/git" }, -- cf (format), cs (git status)
+            { "<leader>f", group = "find files" }, -- ff
+            { "<leader>s", group = "search/spell/todo" }, -- ss, st, sT
+            { "<leader>v", group = "neovim" }, -- vo (options)
+            { "<leader>x", group = "trouble" }, -- xt, xT
+
+            -- Standalone keys defined in Telescope/Undotree
+            { "<leader>D", desc = "Diagnostics" },
+            { "<leader>g", desc = "Live Grep" },
+            { "<leader>h", desc = "Help Tags" },
+            { "<leader>k", desc = "Keymaps" },
+            { "<leader>u", desc = "Undotree Toggle" },
+
+            -- Navigation & Text Objects
+            { "[", group = "prev" }, -- [t, [c, [f
+            { "]", group = "next" }, -- ]t, ]c, ]f
+            { "g", group = "goto/action" }, -- gs, gx, g?, g., etc
+            { "gs", group = "surround/leap" },
             { "z", group = "fold" },
-            {
-              "<leader>b",
-              group = "buffer",
-              expand = function() return require("which-key.extras").expand.buf() end,
-            },
+
+            -- Window management
             {
               "<leader>w",
               group = "windows",
               proxy = "<c-w>",
               expand = function() return require("which-key.extras").expand.win() end,
             },
-            -- better descriptions
             { "gx", desc = "Open with system app" },
           },
         },
