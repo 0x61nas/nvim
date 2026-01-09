@@ -12,6 +12,7 @@ push FLAGS="-u" BRANSH="aurora":
     git push {{FLAGS}} gitlab {{BRANSH}}
     git push {{FLAGS}} codeberg {{BRANSH}}
     git push {{FLAGS}} disroot {{BRANSH}}
+    git push {{FLAGS}} tangled {{BRANSH}}
 
 # Push the git tags to all remotes
 pusht: push
@@ -19,6 +20,7 @@ pusht: push
     git push --tags gitlab
     git push --tags codeberg
     git push --tags disroot
+    git push --tags tangled
     
 # Remove the untraked garage
 clean:
