@@ -258,6 +258,15 @@ end
 -- ============================================================================
 local plugins = {
   -- ========== Color Scheme ==========
+  -- {
+  --   "ptdewey/darkearth-nvim",
+  --   priority = 1000,
+  --   lazy = false,
+  --   enabled = true,
+  --   config = function()
+  --     vim.cmd.colorscheme("darkearth")
+  --   end,
+  -- },
   {
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
