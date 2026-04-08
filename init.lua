@@ -1047,6 +1047,7 @@ local comments = {
   css = { block = { "/*", "*/" } },
   html = { block = { "<!--", "-->" } },
   xml = { block = { "<!--", "-->" } },
+  just = { line = "# "},
 }
 
 local function get_range()
