@@ -1048,6 +1048,7 @@ local comments = {
   html = { block = { "<!--", "-->" } },
   xml = { block = { "<!--", "-->" } },
   just = { line = "# "},
+  tex = { line = "% "},
 }
 
 local function get_range()
