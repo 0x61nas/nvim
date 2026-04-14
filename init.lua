@@ -838,6 +838,11 @@ local plugins = {
 		"NoahTheDuke/vim-just",
 		ft = { "just" },
 	},
+
+  {
+    "https://codeberg.org/ziglang/zig.vim",
+    ft = { "zig" },
+  },
 	
 	-- ========== Cosmetics & Utilities ==========
   {
