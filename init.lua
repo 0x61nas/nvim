@@ -1055,8 +1055,9 @@ local comments = {
   css = { block = { "/*", "*/" } },
   html = { block = { "<!--", "-->" } },
   xml = { block = { "<!--", "-->" } },
-  just = { line = "# "},
-  tex = { line = "% "},
+  just = { line = "# " },
+  tex = { line = "% " },
+  zig = { line = "// " },
 }
 
 local function get_range()
