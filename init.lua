@@ -91,6 +91,11 @@ opt.undofile = true
 opt.encoding = "utf-8"
 opt.termbidi = true
 
+vim.opt.list = true
+vim.opt.listchars = { eol = "$" }
+
+vim.api.nvim_set_hl(0, "NonText", { fg = "#5c6370" })
+
 -- ============================================================================
 -- UTILITY FUNCTIONS
 -- ============================================================================
