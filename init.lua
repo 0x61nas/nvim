@@ -11,14 +11,14 @@
 -- ============================================================================
 local lazy_path = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazy_path) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable",
-		lazy_path,
-	})
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazy_path,
+  })
 end
 vim.opt.rtp: prepend(lazy_path)
 -- ============================================================================
@@ -102,40 +102,40 @@ vim.api.nvim_set_hl(0, "NonText", { fg = "#5c6370" })
 local M = {}
 
 M.bootstrap = function(lazy_path)
-	if not vim.loop.fs_stat(lazy_path) then
-		vim.fn.system({
-			"git",
-			"clone",
-			"--filter=blob:none",
-			"https://github.com/folke/lazy.nvim.git",
-			"--branch=stable",
-			lazy_path,
-		})
-	end
-	vim.opt.rtp:prepend(lazy_path)
+  if not vim.loop.fs_stat(lazy_path) then
+    vim.fn.system({
+      "git",
+      "clone",
+      "--filter=blob:none",
+      "https://github.com/folke/lazy.nvim.git",
+      "--branch=stable",
+      lazy_path,
+    })
+  end
+  vim.opt.rtp:prepend(lazy_path)
 end
 
 local cmds = { "nu!", "rnu!", "nonu!" }
 local current_index = 1
 
 function M.toggle_numbering()
-	current_index = current_index % #cmds + 1
-	vim.cmd("set " .. cmds[current_index])
-	local signcolumn_setting = "auto"
-	if cmds[current_index] == "nonu!" then signcolumn_setting = "yes: 4" end
-	vim.opt.signcolumn = signcolumn_setting
+  current_index = current_index % #cmds + 1
+  vim.cmd("set " .. cmds[current_index])
+  local signcolumn_setting = "auto"
+  if cmds[current_index] == "nonu!" then signcolumn_setting = "yes: 4" end
+  vim.opt.signcolumn = signcolumn_setting
 end
 
 function M.custom_lua_format()
-	local buf = vim.api.nvim_get_current_buf()
-	local filepath = vim.api.nvim_buf_get_name(buf)
-	vim.api.nvim_command("write")
-	local cmd = string.format(
-		"lua-format -i --indent-width=2 --no-use-tab --keep-simple-function-one-line --keep-simple-control-block-one-line --single-quote-to-double-quote --spaces-inside-table-braces --spaces-around-equals-in-field %s",
-		filepath
-	)
-	os.execute(cmd)
-	vim.api.nvim_command("edit")
+  local buf = vim.api.nvim_get_current_buf()
+  local filepath = vim.api.nvim_buf_get_name(buf)
+  vim.api.nvim_command("write")
+  local cmd = string.format(
+    "lua-format -i --indent-width=2 --no-use-tab --keep-simple-function-one-line --keep-simple-control-block-one-line --single-quote-to-double-quote --spaces-inside-table-braces --spaces-around-equals-in-field %s",
+    filepath
+  )
+  os.execute(cmd)
+  vim.api.nvim_command("edit")
 end
 
 -- ============================================================================
@@ -195,10 +195,10 @@ map("x", "<Leader>p", '"_dP')
 local modes = { "n", "v", "s", "o" } -- Normal, visual, select, operator-pending
 local keys = { { "h", "-" }, { "j", "c" }, { "l", "d" } }
 for _, mode in ipairs(modes) do
-	for _, key in ipairs(keys) do
-		map(mode, key[1], key[2], { noremap = true })
-		map(mode, key[2], key[1], { noremap = true })
-	end
+  for _, key in ipairs(keys) do
+    map(mode, key[1], key[2], { noremap = true })
+    map(mode, key[2], key[1], { noremap = true })
+  end
 end
 
 -- Keybinds Reloading Init Files
@@ -419,9 +419,9 @@ local plugins = {
       end,
     },
 
-	-- ========== UI & Navigation ==========
+  -- ========== UI & Navigation ==========
     {
-	    "nvim-lualine/lualine.nvim",
+      "nvim-lualine/lualine.nvim",
       opts = {
         options = {
           icons_enabled = true,
@@ -585,7 +585,7 @@ local plugins = {
         })
       end,
    },
-	-- ========== Linting ==========
+  -- ========== Linting ==========
   -- Lightweight yet powerful formatter plugin for Neovim
    {
       "stevearc/conform.nvim",
@@ -670,179 +670,179 @@ local plugins = {
       },
    },
 
-	-- ========== Navigation & Motion ==========
-	{
-		"ggandor/leap.nvim",
-		keys = {
-			{ "s", mode = { "n", "x", "o" }, desc = "Leap forward to" },
-			{ "S", mode = { "n", "x", "o" }, desc = "Leap backward to" },
-			{ "gs", mode = { "n", "x", "o" }, desc = "Leap from windows" },
-		},
-		config = function(_, opts)
-			local leap = require("leap")
-			for k, v in pairs(opts) do
-				leap.opts[k] = v
-			end
-			leap.add_default_mappings(true)
-			vim.keymap.del({ "x", "o" }, "x")
-			vim.keymap.del({ "x", "o" }, "X")
-		end,
-		dependencies = { "tpope/vim-repeat" },
-	},
-
-	{
-		"ggandor/flit.nvim",
-		keys = function()
-			local ret = {}
-			for _, key in ipairs({ "f", "F", "t", "T" }) do
-				ret[#ret + 1] = { key, mode = { "n", "x", "o" }, desc = key }
-			end
-			return ret
-		end,
-		opts = { labeled_modes = "nx" },
-		dependencies = { "ggandor/leap.nvim" },
-	},
-
-	-- ========== Git & Tools ==========
+  -- ========== Navigation & Motion ==========
   {
-	"lewis6991/gitsigns.nvim",
-	lazy = false,
-	init = function()
-		require("gitsigns").setup({
-			attach_to_untracked = false,
-			current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
-			current_line_blame_opts = {
-				virt_text = true,
-				virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
-				delay = 200,
-				ignore_whitespace = false,
-				virt_text_priority = 100,
-			},
-			current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
-			-- current_line_blame_formatter_opts = {
-			--   relative_time = false,
-			-- },
-		})
-	end,
+    "ggandor/leap.nvim",
+    keys = {
+      { "s", mode = { "n", "x", "o" }, desc = "Leap forward to" },
+      { "S", mode = { "n", "x", "o" }, desc = "Leap backward to" },
+      { "gs", mode = { "n", "x", "o" }, desc = "Leap from windows" },
+    },
+    config = function(_, opts)
+      local leap = require("leap")
+      for k, v in pairs(opts) do
+        leap.opts[k] = v
+      end
+      leap.add_default_mappings(true)
+      vim.keymap.del({ "x", "o" }, "x")
+      vim.keymap.del({ "x", "o" }, "X")
+    end,
+    dependencies = { "tpope/vim-repeat" },
+  },
+
+  {
+    "ggandor/flit.nvim",
+    keys = function()
+      local ret = {}
+      for _, key in ipairs({ "f", "F", "t", "T" }) do
+        ret[#ret + 1] = { key, mode = { "n", "x", "o" }, desc = key }
+      end
+      return ret
+    end,
+    opts = { labeled_modes = "nx" },
+    dependencies = { "ggandor/leap.nvim" },
+  },
+
+  -- ========== Git & Tools ==========
+  {
+  "lewis6991/gitsigns.nvim",
+  lazy = false,
+  init = function()
+    require("gitsigns").setup({
+      attach_to_untracked = false,
+      current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+      current_line_blame_opts = {
+        virt_text = true,
+        virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
+        delay = 200,
+        ignore_whitespace = false,
+        virt_text_priority = 100,
+      },
+      current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
+      -- current_line_blame_formatter_opts = {
+      --   relative_time = false,
+      -- },
+    })
+  end,
 },
   --  Git source for nvim-cmp
   {
-	"petertriho/cmp-git",
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-	},
-	init = function() table.insert(require("cmp").get_config().sources, { name = "git" }) end,
-	config = function()
-		local format = require("cmp_git.format")
-		local sort = require("cmp_git.sort")
+  "petertriho/cmp-git",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+  },
+  init = function() table.insert(require("cmp").get_config().sources, { name = "git" }) end,
+  config = function()
+    local format = require("cmp_git.format")
+    local sort = require("cmp_git.sort")
 
-		require("cmp_git").setup({
-			-- defaults
-			filetypes = { "gitcommit", "octo" },
-			remotes = { "upstream", "origin", "github", "gitlab", "codeberg" }, -- in order of most to least prioritized
-			enableRemoteUrlRewrites = false, -- enable git url rewrites, see https://git-scm.com/docs/git-config#Documentation/git-config.txt-urlltbasegtinsteadOf
-			git = {
-				commits = {
-					limit = 100,
-					sort_by = sort.git.commits,
-					format = format.git.commits,
-				},
-			},
-			github = {
-				hosts = {}, -- list of private instances of github
-				issues = {
-					fields = { "title", "number", "body", "updatedAt", "state" },
-					filter = "all", -- assigned, created, mentioned, subscribed, all, repos
-					limit = 100,
-					state = "open", -- open, closed, all
-					sort_by = sort.github.issues,
-					format = format.github.issues,
-				},
-				mentions = {
-					limit = 100,
-					sort_by = sort.github.mentions,
-					format = format.github.mentions,
-				},
-				pull_requests = {
-					fields = { "title", "number", "body", "updatedAt", "state" },
-					limit = 100,
-					state = "open", -- open, closed, merged, all
-					sort_by = sort.github.pull_requests,
-					format = format.github.pull_requests,
-				},
-			},
-			gitlab = {
-				hosts = {}, -- list of private instances of gitlab
-				issues = {
-					limit = 100,
-					state = "opened", -- opened, closed, all
-					sort_by = sort.gitlab.issues,
-					format = format.gitlab.issues,
-				},
-				mentions = {
-					limit = 100,
-					sort_by = sort.gitlab.mentions,
-					format = format.gitlab.mentions,
-				},
-				merge_requests = {
-					limit = 100,
-					state = "opened", -- opened, closed, locked, merged
-					sort_by = sort.gitlab.merge_requests,
-					format = format.gitlab.merge_requests,
-				},
-			},
-			trigger_actions = {
-				{
-					debug_name = "git_commits",
-					trigger_character = ":",
-					action = function(sources, trigger_char, callback, params, git_info)
-						return sources.git:get_commits(callback, params, trigger_char)
-					end,
-				},
-				{
-					debug_name = "gitlab_issues",
-					trigger_character = "#",
-					action = function(sources, trigger_char, callback, params, git_info)
-						return sources.gitlab:get_issues(callback, git_info, trigger_char)
-					end,
-				},
-				{
-					debug_name = "gitlab_mentions",
-					trigger_character = "@",
-					action = function(sources, trigger_char, callback, params, git_info)
-						return sources.gitlab:get_mentions(callback, git_info, trigger_char)
-					end,
-				},
-				{
-					debug_name = "gitlab_mrs",
-					trigger_character = "!",
-					action = function(sources, trigger_char, callback, params, git_info)
-						return sources.gitlab:get_merge_requests(callback, git_info, trigger_char)
-					end,
-				},
-				{
-					debug_name = "github_issues_and_pr",
-					trigger_character = "#",
-					action = function(sources, trigger_char, callback, params, git_info)
-						return sources.github:get_issues_and_prs(callback, git_info, trigger_char)
-					end,
-				},
-				{
-					debug_name = "github_mentions",
-					trigger_character = "@",
-					action = function(sources, trigger_char, callback, params, git_info)
-						return sources.github:get_mentions(callback, git_info, trigger_char)
-					end,
-				},
-			},
-		})
-	end,
+    require("cmp_git").setup({
+      -- defaults
+      filetypes = { "gitcommit", "octo" },
+      remotes = { "upstream", "origin", "github", "gitlab", "codeberg" }, -- in order of most to least prioritized
+      enableRemoteUrlRewrites = false, -- enable git url rewrites, see https://git-scm.com/docs/git-config#Documentation/git-config.txt-urlltbasegtinsteadOf
+      git = {
+        commits = {
+          limit = 100,
+          sort_by = sort.git.commits,
+          format = format.git.commits,
+        },
+      },
+      github = {
+        hosts = {}, -- list of private instances of github
+        issues = {
+          fields = { "title", "number", "body", "updatedAt", "state" },
+          filter = "all", -- assigned, created, mentioned, subscribed, all, repos
+          limit = 100,
+          state = "open", -- open, closed, all
+          sort_by = sort.github.issues,
+          format = format.github.issues,
+        },
+        mentions = {
+          limit = 100,
+          sort_by = sort.github.mentions,
+          format = format.github.mentions,
+        },
+        pull_requests = {
+          fields = { "title", "number", "body", "updatedAt", "state" },
+          limit = 100,
+          state = "open", -- open, closed, merged, all
+          sort_by = sort.github.pull_requests,
+          format = format.github.pull_requests,
+        },
+      },
+      gitlab = {
+        hosts = {}, -- list of private instances of gitlab
+        issues = {
+          limit = 100,
+          state = "opened", -- opened, closed, all
+          sort_by = sort.gitlab.issues,
+          format = format.gitlab.issues,
+        },
+        mentions = {
+          limit = 100,
+          sort_by = sort.gitlab.mentions,
+          format = format.gitlab.mentions,
+        },
+        merge_requests = {
+          limit = 100,
+          state = "opened", -- opened, closed, locked, merged
+          sort_by = sort.gitlab.merge_requests,
+          format = format.gitlab.merge_requests,
+        },
+      },
+      trigger_actions = {
+        {
+          debug_name = "git_commits",
+          trigger_character = ":",
+          action = function(sources, trigger_char, callback, params, git_info)
+            return sources.git:get_commits(callback, params, trigger_char)
+          end,
+        },
+        {
+          debug_name = "gitlab_issues",
+          trigger_character = "#",
+          action = function(sources, trigger_char, callback, params, git_info)
+            return sources.gitlab:get_issues(callback, git_info, trigger_char)
+          end,
+        },
+        {
+          debug_name = "gitlab_mentions",
+          trigger_character = "@",
+          action = function(sources, trigger_char, callback, params, git_info)
+            return sources.gitlab:get_mentions(callback, git_info, trigger_char)
+          end,
+        },
+        {
+          debug_name = "gitlab_mrs",
+          trigger_character = "!",
+          action = function(sources, trigger_char, callback, params, git_info)
+            return sources.gitlab:get_merge_requests(callback, git_info, trigger_char)
+          end,
+        },
+        {
+          debug_name = "github_issues_and_pr",
+          trigger_character = "#",
+          action = function(sources, trigger_char, callback, params, git_info)
+            return sources.github:get_issues_and_prs(callback, git_info, trigger_char)
+          end,
+        },
+        {
+          debug_name = "github_mentions",
+          trigger_character = "@",
+          action = function(sources, trigger_char, callback, params, git_info)
+            return sources.github:get_mentions(callback, git_info, trigger_char)
+          end,
+        },
+      },
+    })
+  end,
 },
-	-- ========== Language Support ==========
-	{
-		"NoahTheDuke/vim-just",
-		ft = { "just" },
-	},
+  -- ========== Language Support ==========
+  {
+    "NoahTheDuke/vim-just",
+    ft = { "just" },
+  },
 
   {
     "https://codeberg.org/ziglang/zig.vim",
@@ -851,8 +851,8 @@ local plugins = {
       vim.g.zig_fmt_autosave = 0
     end,
   },
-	
-	-- ========== Cosmetics & Utilities ==========
+  
+  -- ========== Cosmetics & Utilities ==========
   {
     "folke/todo-comments.nvim",
     cmd = { "TodoTrouble", "TodoTelescope" },
@@ -1037,11 +1037,11 @@ local plugins = {
       end,
   },
   "tpope/vim-fugitive",
-	"ellisonleao/glow.nvim",
+  "ellisonleao/glow.nvim",
 }
 
 require("lazy").setup(plugins, {
-	defaults = { lazy = false },
+  defaults = { lazy = false },
 })
 
 -- Auto cmmonts
@@ -1167,7 +1167,7 @@ vim.keymap.set({ "n", "v" }, "<C-_>", toggle_comment, { silent = true })
 -- NEOVIDE CONFIGURATION
 -- ============================================================================
 if vim.g.neovide then
-	vim.o.guifont = "JetBrains_Mono,Noto_Color_Emoji,Noto_Kufi_Arabic: h10"
+  vim.o.guifont = "JetBrains_Mono,Noto_Color_Emoji,Noto_Kufi_Arabic: h10"
 end
 
 -- ============================================================================
@@ -1179,40 +1179,40 @@ local autocmd = vim.api. nvim_create_autocmd
 -- Groff
 local groff = augroup("groff", {})
 autocmd("BufWritePost", {
-	pattern = { "*.ms" },
-	command = "silent ! pdfroff -ms % -e -t -p > %: r.pdf",
-	group = groff,
+  pattern = { "*.ms" },
+  command = "silent ! pdfroff -ms % -e -t -p > %: r.pdf",
+  group = groff,
 })
 
 -- Indentation
 local indention = augroup("indentaion", {})
 autocmd("FileType", {
-	pattern = {
-		"html",
-		"htmldjango",
-		"css",
-		"scss",
-		"javascript",
-		"javascriptreact",
-		"typescript",
-		"nix",
-		"typescriptreact",
-		"lua",
-		"markdown",
-		"jinja",
-		"html. mustache",
-		"html.handlebars",
-		"prisma",
-	},
-	command = "setlocal tabstop=2 softtabstop=2 shiftwidth=2",
-	group = indention,
+  pattern = {
+    "html",
+    "htmldjango",
+    "css",
+    "scss",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "nix",
+    "typescriptreact",
+    "lua",
+    "markdown",
+    "jinja",
+    "html. mustache",
+    "html.handlebars",
+    "prisma",
+  },
+  command = "setlocal tabstop=2 softtabstop=2 shiftwidth=2",
+  group = indention,
 })
 
 -- Highlight yanked text
 local highlightYank = augroup("highlightYank", {})
 autocmd("TextYankPost", {
-	callback = function() vim.highlight.on_yank({ higroup = "Visual", timeout = 300 }) end,
-	group = highlightYank,
+  callback = function() vim.highlight.on_yank({ higroup = "Visual", timeout = 300 }) end,
+  group = highlightYank,
 })
 
 -- Center Screen On Insert
@@ -1222,28 +1222,28 @@ autocmd("InsertEnter", { pattern = "*", command = "norm zz", group = centerScree
 -- Opens PDF/Media files in PDFVIWER/BROWSER instead of viewing binary
 local openMediaFiles = augroup("openMediaFiles", {})
 autocmd("BufReadPost", {
-	pattern = { "*.pdf" },
-	callback = function()
-		local command
-		if pcall(os.getenv("PDFVIWER")) then
-			command = os.getenv("PDFVIWER")
-		else
-			command = os.getenv("BROWSER")
-		end
-		vim.fn.jobstart(string.format("%s '%s'", command, vim.fn.expand("%")), { detach = true })
-		vim.api.nvim_buf_delete(0, {})
-	end,
-	group = openMediaFiles,
+  pattern = { "*.pdf" },
+  callback = function()
+    local command
+    if pcall(os.getenv("PDFVIWER")) then
+      command = os.getenv("PDFVIWER")
+    else
+      command = os.getenv("BROWSER")
+    end
+    vim.fn.jobstart(string.format("%s '%s'", command, vim.fn.expand("%")), { detach = true })
+    vim.api.nvim_buf_delete(0, {})
+  end,
+  group = openMediaFiles,
 })
 
 autocmd("BufReadPost", {
-	pattern = { "*.png", "*.webp", "*.jpg", "*. jpeg", "*.mp4" },
-	callback = function()
-		local command = os.getenv("BROWSER")
-		vim.fn.jobstart(string. format("%s '%s'", command, vim.fn.expand("%")), { detach = true })
-		vim.api.nvim_buf_delete(0, {})
-	end,
-	group = openMediaFiles,
+  pattern = { "*.png", "*.webp", "*.jpg", "*. jpeg", "*.mp4" },
+  callback = function()
+    local command = os.getenv("BROWSER")
+    vim.fn.jobstart(string. format("%s '%s'", command, vim.fn.expand("%")), { detach = true })
+    vim.api.nvim_buf_delete(0, {})
+  end,
+  group = openMediaFiles,
 })
 
 -- restore cursor position
