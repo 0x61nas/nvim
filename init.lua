@@ -437,12 +437,6 @@ local plugins = {
           lualine_b = {
             "branch",
             "diff",
-            {
-              "diagnostics",
-              sources = { "nvim_lsp", "coc" },
-              update_in_insert = true,
-              always_visible = true,
-            },
           },
           lualine_c = { { "filename", file_status = true, path = 1 } },
           lualine_x = { "filetype" },
