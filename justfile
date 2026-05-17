@@ -27,3 +27,10 @@ pusht: push
 # Remove the untraked garage
 clean:
     git clean -fdx
+
+# Update the local gruvbox theme from upstream
+update-gruvbox:
+    tmpdir=$(mktemp -d) && \
+    git clone --depth=1 https://github.com/ellisonleao/gruvbox.nvim "$tmpdir" && \
+    cp "$tmpdir/lua/gruvbox.lua" lua/gruvbox.lua && \
+    rm -rf "$tmpdir"
