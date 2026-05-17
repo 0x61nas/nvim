@@ -25,7 +25,7 @@ vim.opt.rtp: prepend(lazy_path)
 -- CORE SETTINGS
 -- ============================================================================
 vim.loader.enable()
-package.path = package.path .. ';' .. vim.fn.stdpath('config') .. '/?.lua'
+
 -- I'm lazy
 local opt = vim.opt
 
@@ -272,26 +272,7 @@ local plugins = {
   --     vim.cmd.colorscheme("darkearth")
   --   end,
   -- },
-  {
-    "ellisonleao/gruvbox.nvim",
-    priority = 1000,
-    lazy = false,
-    enabled = true,
-    config = function()
-      require("gruvbox").setup({
-        transparent_mode = false,
-        -- overrides = {
-        --     NvimTreeNormal = {bg = '#32302f'},
-        --     NvimTreeEndOfBuffer = {fg = '#32302f'},
-        --     EndOfBuffer = {fg = "#32302f"},
-        --     NonText = {fg = "#5a524c"}
-        -- }
-      })
-      vim.cmd([[colorscheme gruvbox]])
-      vim.o.background = "dark" -- or "light" for light mode
-    end,
-   },
-   -- ========== Completion ==========
+  -- ========== Completion ==========
    {
     "L3MON4D3/LuaSnip",
     -- follow latest release.
@@ -1037,6 +1018,13 @@ local plugins = {
 require("lazy").setup(plugins, {
   defaults = { lazy = false },
 })
+
+-- Theme
+require("gruvbox").setup({
+  transparent_mode = false,
+})
+vim.cmd.colorscheme("gruvbox")
+vim.o.background = "dark"
 
 -- We have comments.nvim at home
 local comments = {
