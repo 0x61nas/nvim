@@ -957,35 +957,49 @@ local plugins = {
         spec = {
           {
             mode = { "n", "v" },
-            -- Group names based on keys defined in other plugins
-            { "<leader>b", group = "buffers" }, -- bb
-            { "<leader>c", group = "code/git" }, -- cf (format), cs (git status)
-            { "<leader>f", group = "find files" }, -- ff
-            { "<leader>s", group = "search/spell/todo" }, -- ss, st, sT
-            { "<leader>v", group = "neovim" }, -- vo (options)
-            { "<leader>x", group = "trouble" }, -- xt, xT
+            { "<leader>b", group = "buffer" },
+            { "<leader>bb", desc = "List buffers" },
+            { "<leader>bd", desc = "Delete buffer" },
+            { "<leader><Tab>", desc = "Next buffer" },
+            { "<leader><S-Tab>", desc = "Previous buffer" },
 
-            -- Standalone keys defined in Telescope/Undotree
+            { "<leader>c", group = "code" },
+            { "<leader>cf", desc = "Format buffer" },
+            { "<leader>cs", desc = "Git status" },
+
+            { "<leader>f", group = "find" },
+            { "<leader>ff", desc = "Find files" },
+
+            { "<leader>s", group = "search" },
+            { "<leader>ss", desc = "Spell suggest" },
+
+            { "<leader>v", group = "neovim" },
+            { "<leader>vo", desc = "Options" },
+            { "<leader>vr", desc = "Reload config" },
+
+            { "<leader>w", group = "window", proxy = "<c-w>",
+              expand = function() return require("which-key.extras").expand.win() end },
+            { "<leader>wv", desc = "Vertical split" },
+            { "<leader>ws", desc = "Horizontal split" },
+
             { "<leader>D", desc = "Diagnostics" },
-            { "<leader>g", desc = "Live Grep" },
-            { "<leader>h", desc = "Help Tags" },
+            { "<leader>g", desc = "Live grep" },
+            { "<leader>h", desc = "Help tags" },
             { "<leader>k", desc = "Keymaps" },
-            { "<leader>u", desc = "Undotree Toggle" },
+            { "<leader>l", desc = "Clear highlights" },
+            { "<leader>o", desc = "Blank line below" },
+            { "<leader>O", desc = "Blank line above" },
+            { "<leader>p", desc = "Paste without yanking", mode = "x" },
+            { "<leader>u", desc = "Undotree toggle" },
+            { "<leader>?", desc = "Buffer keymaps" },
 
-            -- Navigation & Text Objects
-            { "[", group = "prev" }, -- [t, [c, [f
-            { "]", group = "next" }, -- ]t, ]c, ]f
-            { "g", group = "goto/action" }, -- gs, gx, g?, g., etc
-            { "gs", group = "surround/leap" },
+            { "[", group = "prev" },
+            { "]", group = "next" },
+            { "g", group = "goto" },
+            { "gs", group = "leap/surround" },
             { "z", group = "fold" },
-
-            -- Window management
-            {
-              "<leader>w",
-              group = "windows",
-              proxy = "<c-w>",
-              expand = function() return require("which-key.extras").expand.win() end,
-            },
+            { "s", desc = "Leap forward to" },
+            { "S", desc = "Leap backward to" },
             { "gx", desc = "Open with system app" },
           },
         },
