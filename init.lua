@@ -1038,124 +1038,67 @@ require("lazy").setup(plugins, {
   defaults = { lazy = false },
 })
 
--- Auto cmmonts
+-- We have comments.nvim at home
 local comments = {
-  lua = { line = "--" },
-  python = { line = "#" },
-  sh = { line = "#" },
-  bash = { line = "#" },
-  zsh = { line = "#" },
-  c = { line = "//" },
-  cpp = { line = "//" },
-  java = { line = "//" },
-  javascript = { line = "//" },
+  lua = { line = "-- " },
+  python = { line = "# " },
+  sh = { line = "# " },
+  bash = { line = "# " },
+  zsh = { line = "# " },
+  c = { line = "// " },
+  cpp = { line = "// " },
+  java = { line = "// " },
+  javascript = { line = "// " },
   typescript = { line = "//" },
-  rust = { line = "//" },
-  css = { block = { "/*", "*/" } },
-  html = { block = { "<!--", "-->" } },
-  xml = { block = { "<!--", "-->" } },
+  rust = { line = "// " },
+  css = { block = { "/* ", " */" } },
+  html = { block = { "<!-- ", " -->" } },
+  xml = { block = { "<!-- ", " -->" } },
   just = { line = "# " },
   tex = { line = "% " },
   zig = { line = "// " },
 }
 
-local function get_range()
-  local mode = vim.fn.mode()
-  if mode:match("[vV]") then
-    local s = vim.fn.getpos("'<")[2]
-    local e = vim.fn.getpos("'>")[2]
-    if s > e then s, e = e, s end
-    return s, e
-  else
-    local l = vim.api.nvim_win_get_cursor(0)[1]
-    return l, l
-  end
-end
-
-local function get_min_indent(lines)
-  local min = nil
-  for _, line in ipairs(lines) do
-    if line:match("%S") then
-      local indent = line:match("^%s*")
-      if not min or #indent < min then
-        min = #indent
-      end
-    end
-  end
-  return min or 0
-end
-
-local function toggle_comment()
-  local ft = vim.bo.filetype
-  local cfg = comments[ft]
+local function toggle_comment(s, e)
+  if s > e then s, e = e, s end
+  local cfg = comments[vim.bo.filetype]
   if not cfg then return end
+  local p = cfg.line
+  if not p then return end
 
-  local s, e = get_range()
-  local lines = vim.api.nvim_buf_get_lines(0, s - 1, e, false)
+  local all = true
+  for i = s, e do
+    local t = vim.fn.getline(i):match("^%s*(.-)%s*$")
+    if t ~= "" and t:sub(1, #p) ~= p then all = false; break end
+  end
 
-  if cfg.line then
-    local prefix = cfg.line
-    local all_commented = true
-
-    for _, line in ipairs(lines) do
-      if line:match("%S") and not line:match("^%s*" .. vim.pesc(prefix)) then
-        all_commented = false
-        break
-      end
-    end
-
-    local min_indent = get_min_indent(lines)
-
-    for i, line in ipairs(lines) do
-      if not line:match("%S") then goto continue end
-
-      if all_commented then
-        lines[i] = line:gsub("^%s*" .. vim.pesc(prefix) .. "%s?", "", 1)
-      else
-        local indent = line:match("^%s*")
-        if #indent > min_indent then
-          indent = indent:sub(1, min_indent)
-        end
-        lines[i] = indent .. prefix .. " " .. line:sub(#indent + 1)
-      end
-
-      ::continue::
-    end
-
-  elseif cfg.block then
-    local open, close = cfg.block[1], cfg.block[2]
-    local min_indent = get_min_indent(lines)
-
-    if #lines == 1 then
-      local line = lines[1]
+  for i = s, e do
+    local line = vim.fn.getline(i)
+    local t = line:match("^%s*(.-)%s*$")
+    if t ~= "" then
       local indent = line:match("^%s*")
-
-      if line:match("^%s*" .. vim.pesc(open)) and line:match(vim.pesc(close) .. "%s*$") then
-        line = line:gsub("^%s*" .. vim.pesc(open) .. "%s*", "", 1)
-        line = line:gsub("%s*" .. vim.pesc(close) .. "%s*$", "", 1)
-        lines[1] = indent .. line
-      else
-        lines[1] = indent .. open .. " " .. line:sub(#indent + 1) .. " " .. close
-      end
-    else
-      local first = lines[1]
-      local last = lines[#lines]
-
-      if first:match("^%s*" .. vim.pesc(open)) and last:match(vim.pesc(close) .. "%s*$") then
-        lines[1] = first:gsub("^%s*" .. vim.pesc(open) .. "%s*", "", 1)
-        lines[#lines] = last:gsub("%s*" .. vim.pesc(close) .. "%s*$", "", 1)
-      else
-        local indent = string.rep(" ", min_indent)
-        lines[1] = indent .. open .. " " .. first:sub(min_indent + 1)
-        lines[#lines] = last .. " " .. close
+      if all then
+        local rest = line:match("^%s*" .. vim.pesc(p) .. "(.*)$") or ""
+        vim.fn.setline(i, indent .. rest)
+      elseif t:sub(1, #p) ~= p then
+        local sp = p:match("%s$") and "" or " "
+        vim.fn.setline(i, indent .. p .. sp .. line:sub(#indent + 1))
       end
     end
   end
-
-  vim.api.nvim_buf_set_lines(0, s - 1, e, false, lines)
 end
 
-vim.keymap.set({ "n", "v" }, "<C-_>", toggle_comment, { silent = true })
+vim.keymap.set("n", "<C-_>", function()
+  toggle_comment(vim.fn.line("."), vim.fn.line("."))
+end)
+
+_G.ToggleComment = function()
+  local s = vim.api.nvim_buf_get_mark(0, "<")[1]
+  local e = vim.api.nvim_buf_get_mark(0, ">")[1]
+  if s > 0 and e > 0 then toggle_comment(s, e) end
+end
+
+vim.keymap.set("x", "<C-_>", "<ESC><CMD>lua _G.ToggleComment()<CR>")
 
 -- ============================================================================
 -- NEOVIDE CONFIGURATION
