@@ -6,11 +6,6 @@ on:
       - aurora
     tags:
       - "v*.*.*"
-  pull_request:
-    branches:
-      - aurora
-  schedule:
-    - cron: "0 0 * * 0"
 permissions:
   packages: write
   contents: read
@@ -31,9 +26,6 @@ jobs:
             anaselgarhy/nvim
             ghcr.io/${{ github.repository_owner }}/nvim
           tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=pr
             type=sha
             type=raw,value=latest
             type=semver,pattern={{version}}
